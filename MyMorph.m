@@ -1,27 +1,24 @@
-clear
-clc
-
 % Select morphing method
 triangles = 0;
 video = 0;
 
 %% Loading Images to Memory
 
-im1 = imread('seb.jpg');
-%im2 = imread('will.jpg');
-im2 = imread('E:\Research files\Journal\1st Journal\ImageMorphing-master\Fixed Points\Dog\Dog.jpg');
+im1 = imread('---.jpg'); % Human face
+%im2 = imread('---.jpg'); %Human face
+im2 = imread('E:\-------------\Fixed Points\Dog\Dog.jpg'); % Put the folder location of animal face
 [H,W,C]=size(im2);
 im1=imresize(im1,[H,W]);
 
-%% Click Correspondences
+%% Extract Moving Points of human face
 
 movingPoints = MovingPoints(im1);
 im1_pts = movingPoints;
-%%
+%% Extract fixed Points of 2nd human face
 fixedPoints = fixedPoints(im2);
 im2_pts = fixedPoints;
-%%
-im2_pts = load('E:\Research files\Journal\1st Journal\ImageMorphing-master\Fixed Points\Dog\Dog.mat');
+%% Or Extract fixed Points of Animal face
+im2_pts = load('E:\--------------------\Fixed Points\Dog\Dog.mat');
 im2_pts = im2_pts.fixedPoints;
 cornerPoints = [1,1; 0.25*W,1; 0.5*W,1; 0.75*W,1;...
                 W,1; W,0.25*H; W,0.5*H; W,0.75*H;...
@@ -30,10 +27,11 @@ cornerPoints = [1,1; 0.25*W,1; 0.5*W,1; 0.75*W,1;...
 
 im1_pts=[im1_pts;cornerPoints];
 im2_pts=[im2_pts;cornerPoints];
+%% This option is only for mouse clicking control point extraction system
 % obtain user input for points
 %[im1_pts, im2_pts] = click_correspondences(im1, im2);
 
-% triangulate
+% Apply delaunay triangulation
 mean_pts = (im1_pts + im2_pts)/2;
 triangulation = delaunayTriangulation(mean_pts);
 
